@@ -6,7 +6,7 @@ namespace DIPS_Challenge
         // Comment?
         Account CreateAccount(Person customer, Money initialDeposit)
         {
-            if(_requestOwnerHasSufficientFunds(customer, initialDeposit))
+            if (_requestOwnerHasSufficientFunds(customer, initialDeposit))
             {
                 Account newAccount = new Account(customer, initialDeposit);
                 var accounts = this.GetAccountsForCustomer(customer);
@@ -20,64 +20,88 @@ namespace DIPS_Challenge
         }
 
         // Comment?
-        Account[] GetAccountsForCustomer(Person customer)
+        public Account[] GetAccountsForCustomer(Person customer)
         {
             return customer.accounts;
         }
 
         // Comment?
-        private bool _requestOwnerOwnsAccount(Person requestOwner, Account transfer)
+        private bool _requestOwnerOwnsAccount(Account transfer, Person requestOwner)
         {
             return transfer.owner == requestOwner;
         }
 
         // This method only supports one type of currency. 
         // Please update the Money Interface and Class before implementing support for multiple currencies
-        private bool _requestOwnerHasSufficientFunds(Person requestOwner, Money amount)
+        private bool _requestAccountHasSufficientFunds(Account transfer, Money amount)
         {
-            var requestOwnerAccounts = this.GetAccountsForCustomer(requestOwner);
-            foreach (Account account in requestOwnerAccounts)
-            {
-                _value += account.money.value;
-            }
-            return _value >= amount.value;
+            return transfer.money.value >= amount.value;
         }
 
-        private bool _validTransaction(Person requestOwner, Account transfer, Money amount)
+        private bool _requestMoneyIsPositive(Money amount)
         {
-            return (_requestOwnerOwnsAccount(requestOwner, transfer) && _requestOwnerHasSufficientFunds(requestOwner, amount));
+            return amount.value >= 0;
         }
 
-        private bool _performTransaction(Person requestOwner, Account transfer, Money amount)
+        private bool _validWithdrawTransaction(Account transfer, Money amount)
         {
-            _value = 0;
-            _money = null;
+            return (
+                _requestOwnerOwnsAccount(transfer, amount.owner) && 
+                _requestAccountHasSufficientFunds(transfer, amount) && 
+                _requestMoneyIsPositive(amount)
+                );
+        }
 
-            foreach (Account account in requestOwnerAccounts)
-            {
-                _money = account.money;
-                _amount -= _money.value;
-                if (_amount <= 0)
-                {
-                    account.money.value -= _amount;
-                    to.money.value += amount.value;
-                }
-                else
-                {
+        private bool _validDepositTransaction(Account transfer, Money amount)
+        {
+            return (
+                _requestOwnerOwnsAccount(transfer, amount.owner) && 
+                _requestMoneyIsPositive(amount)
+                );
+        }
 
-                }
-            }
+        // This method only supports one type of currency. 
+        // Please update the Money Interface and Class before implementing support for multiple currencies
+        private void _performDepositTransaction(Account transfer, Money amount)
+        {
+            transfer.money.value += amount.value;
+            amount.value = 0;
+        }
+
+        private void _performWithdrawTransaction(Account transfer, Money amount)
+        {
+            transfer.money.value -= amount
+            
         }
 
         // This method only supports one type of currency through _requestOwnerHasSufficientFunds
         // Please update the Money Interface and Class before implementing support for multiple currencies
-        void Deposit(Person requestOwner, Account to, Money amount)
+
+        public Account CreateAccount(Person customer, Money initialDeposit)
         {
-            if (_validTransaction(requestOwner, to, amount))
+            throw new NotImplementedException();
+        }
+
+        public void Deposit(Account to, Money amount)
+        {
+            if (_validTransaction(to, amount))
             {
-                _performTransaction(requestOwner, transfer, amount);
+                _performDepositTransaction(to, amount);
+            }
+            else
+            {
 
             }
+        }
+
+        public void Withdraw(Account from, Money amount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Transfer(Account from, Account to, Money amount)
+        {
+            throw new NotImplementedException();
         }
     }
 }
