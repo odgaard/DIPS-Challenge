@@ -6,6 +6,8 @@ namespace DIPS_Challenge
         private string _name;
         private Account[] _accounts;
         private int _accountSerialNumber;
+        private Money _money;
+
         public Person(string name, Account[] accounts)
         {
             _name = name;
@@ -49,6 +51,18 @@ namespace DIPS_Challenge
             get
             {
                 return _accountSerialNumber;
+            }
+        }
+
+        public Money money
+        {
+            get
+            {
+                return _money;
+            }
+            set
+            {
+                _money = money;
             }
         }
 

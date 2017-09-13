@@ -4,19 +4,9 @@ namespace DIPS_Challenge
     public class Bank : IBankable
     {
         // Comment?
-        Account CreateAccount(Person customer, Money initialDeposit)
+        public Account CreateAccount(Person customer, Money initialDeposit)
         {
-            if (_requestOwnerHasSufficientFunds(customer, initialDeposit))
-            {
-                Account newAccount = new Account(customer, initialDeposit);
-                var accounts = this.GetAccountsForCustomer(customer);
-                accounts.Add(newAccount);
-                return newAccount;
-            }
-            else
-            {
-                throw ArgumentOutOfRangeException;
-            }
+            throw new NotImplementedException();
         }
 
         // Comment?
@@ -60,48 +50,52 @@ namespace DIPS_Challenge
                 );
         }
 
+        private bool _validTransferTransaction(Account from, Account to, Money amount)
+        {
+            return (
+                _validWithdrawTransaction(from, amount) &&
+                _validDepositTransaction(to, amount)
+                );
+        }
+
         // This method only supports one type of currency. 
         // Please update the Money Interface and Class before implementing support for multiple currencies
         private void _performDepositTransaction(Account transfer, Money amount)
         {
             transfer.money.value += amount.value;
-            amount.value = 0;
         }
 
         private void _performWithdrawTransaction(Account transfer, Money amount)
         {
-            transfer.money.value -= amount
-            
+            transfer.money.value -= amount.value;    
         }
 
         // This method only supports one type of currency through _requestOwnerHasSufficientFunds
         // Please update the Money Interface and Class before implementing support for multiple currencies
 
-        public Account CreateAccount(Person customer, Money initialDeposit)
-        {
-            throw new NotImplementedException();
-        }
-
         public void Deposit(Account to, Money amount)
         {
-            if (_validTransaction(to, amount))
+            if (_validDepositTransaction(to, amount))
             {
                 _performDepositTransaction(to, amount);
-            }
-            else
-            {
-
-            }
+            }       
         }
 
         public void Withdraw(Account from, Money amount)
         {
-            throw new NotImplementedException();
+            if(_validWithdrawTransaction(from, amount))
+            {
+                _performWithdrawTransaction(from, amount);
+            }
         }
 
         public void Transfer(Account from, Account to, Money amount)
         {
-            throw new NotImplementedException();
+            if(_validTransferTransaction(from, to, amount))
+            {
+                Withdraw(from, amount);
+                Deposit(to, amount);
+            }
         }
     }
 }

@@ -1,0 +1,7 @@
+E:\Users\Jacob\Programming\DIPS-Challenge\DIPS-Challenge\bin\Debug\DIPS-Challenge.exe.config
+E:\Users\Jacob\Programming\DIPS-Challenge\DIPS-Challenge\bin\Debug\DIPS-Challenge.exe
+E:\Users\Jacob\Programming\DIPS-Challenge\DIPS-Challenge\bin\Debug\DIPS-Challenge.pdb
+E:\Users\Jacob\Programming\DIPS-Challenge\DIPS-Challenge\obj\Debug\DIPS-Challenge.csprojResolveAssemblyReference.cache
+E:\Users\Jacob\Programming\DIPS-Challenge\DIPS-Challenge\obj\Debug\DIPS-Challenge.csproj.CoreCompileInputs.cache
+E:\Users\Jacob\Programming\DIPS-Challenge\DIPS-Challenge\obj\Debug\DIPS-Challenge.exe
+E:\Users\Jacob\Programming\DIPS-Challenge\DIPS-Challenge\obj\Debug\DIPS-Challenge.pdb
