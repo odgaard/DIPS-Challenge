@@ -2,7 +2,7 @@
 
 public interface ICurrency
 {
-    decimal value
+    decimal Value
     {
         get;
         set;

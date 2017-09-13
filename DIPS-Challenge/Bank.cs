@@ -4,71 +4,60 @@ namespace DIPS_Challenge
     public class Bank : IBankable
     {
         // Comment?
+        private string _bankName;
+
+        public Bank(string name)
+        {
+            _bankName = name;
+        }
+
         public Account CreateAccount(Person customer, Money initialDeposit)
         {
-            throw new NotImplementedException();
+            if(_requestOwnerHasSufficientFunds(customer, initialDeposit))
+            {
+                var newAccount = new Account(initialDeposit, customer);
+                customer.Money.Value -= initialDeposit.Value;
+                return newAccount;
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException("Insufficient funds");
+            }
         }
 
         // Comment?
         public Account[] GetAccountsForCustomer(Person customer)
         {
-            return customer.accounts;
-        }
-
-        // Comment?
-        private bool _requestOwnerOwnsAccount(Account transfer, Person requestOwner)
-        {
-            return transfer.owner == requestOwner;
+            return customer.Accounts;
         }
 
         // This method only supports one type of currency. 
         // Please update the Money Interface and Class before implementing support for multiple currencies
-        private bool _requestAccountHasSufficientFunds(Account transfer, Money amount)
-        {
-            return transfer.money.value >= amount.value;
-        }
+        private bool _requestOwnerHasSufficientFunds(Person owner, Money amount) => owner.Money.Value >= amount.Value;
 
-        private bool _requestMoneyIsPositive(Money amount)
-        {
-            return amount.value >= 0;
-        }
+        private bool _requestAccountHasSufficientFunds(Account transfer, Money amount) => transfer.Money.Value >= amount.Value;
 
-        private bool _validWithdrawTransaction(Account transfer, Money amount)
-        {
-            return (
-                _requestOwnerOwnsAccount(transfer, amount.owner) && 
-                _requestAccountHasSufficientFunds(transfer, amount) && 
+        private bool _requestMoneyIsPositive(Money amount) => amount.Value >= 0;
+
+        private bool _validWithdrawTransaction(Account transfer, Money amount) => (
+                _requestAccountHasSufficientFunds(transfer, amount) &&
                 _requestMoneyIsPositive(amount)
                 );
-        }
 
-        private bool _validDepositTransaction(Account transfer, Money amount)
-        {
-            return (
-                _requestOwnerOwnsAccount(transfer, amount.owner) && 
+        private bool _validDepositTransaction(Account transfer, Money amount) => (
                 _requestMoneyIsPositive(amount)
                 );
-        }
 
-        private bool _validTransferTransaction(Account from, Account to, Money amount)
-        {
-            return (
+        private bool _validTransferTransaction(Account from, Account to, Money amount) => (
                 _validWithdrawTransaction(from, amount) &&
                 _validDepositTransaction(to, amount)
                 );
-        }
 
         // This method only supports one type of currency. 
         // Please update the Money Interface and Class before implementing support for multiple currencies
-        private void _performDepositTransaction(Account transfer, Money amount)
-        {
-            transfer.money.value += amount.value;
-        }
+        private void _performDepositTransaction(Account transfer, Money amount) => transfer.Money.Value += amount.Value;
 
-        private void _performWithdrawTransaction(Account transfer, Money amount)
-        {
-            transfer.money.value -= amount.value;    
-        }
+        private void _performWithdrawTransaction(Account transfer, Money amount) => transfer.Money.Value -= amount.Value;
 
         // This method only supports one type of currency through _requestOwnerHasSufficientFunds
         // Please update the Money Interface and Class before implementing support for multiple currencies

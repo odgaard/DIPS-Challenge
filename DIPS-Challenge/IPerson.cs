@@ -4,22 +4,21 @@ namespace DIPS_Challenge
     public interface IPerson
     {
 
-        public void incrementAccountSerialNumber();
+        void IncrementAccountSerialNumber();
 
-        string name
+        string Name
         {
             get;
             set;
         }
 
-        Account[] accounts
+        Account[] Accounts
         {
             get;
-            set;
         }
 
 
-        int accountSerialNumber
+        int AccountSerialNumber
         {
             get;
         }

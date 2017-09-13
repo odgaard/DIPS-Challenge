@@ -3,15 +3,19 @@ namespace DIPS_Challenge
 {
     public interface IAccount
     {
-        Money money
+        Money Money
         {
             get;
             set;
         }
-        Person owner
+        Person Owner
         {
             get;
             set;
+        }
+        string Name
+        {
+            get;
         }
     }
 }
