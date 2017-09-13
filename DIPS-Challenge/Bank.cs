@@ -6,7 +6,17 @@ namespace DIPS_Challenge
         // Comment?
         public Account CreateAccount(Person customer, Money initialDeposit)
         {
-            throw new NotImplementedException();
+            if(_requestOwnerHasSufficientFunds(customer, initialDeposit))
+            {
+                var newAccount = new Account(initialDeposit, customer);
+                customer.money.value -= initialDeposit.value;
+                customer.AddAccount(newAccount);
+                return newAccount;
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException("Insufficient funds");
+            }
         }
 
         // Comment?
@@ -26,6 +36,11 @@ namespace DIPS_Challenge
         private bool _requestAccountHasSufficientFunds(Account transfer, Money amount)
         {
             return transfer.money.value >= amount.value;
+        }
+
+        private bool _requestOwnerHasSufficientFunds(Person owner, Money amount)
+        {
+            return owner.money.value >= amount.value;
         }
 
         private bool _requestMoneyIsPositive(Money amount)
@@ -53,8 +68,7 @@ namespace DIPS_Challenge
         private bool _validTransferTransaction(Account from, Account to, Money amount)
         {
             return (
-                _validWithdrawTransaction(from, amount) &&
-                _validDepositTransaction(to, amount)
+                _validWithdrawTransaction(from, amount)
                 );
         }
 
@@ -89,12 +103,14 @@ namespace DIPS_Challenge
             }
         }
 
+
+        // This function needs to bypass the conditional checks of Withdraw and Deposit due to the access constrictions of the aforementioned
         public void Transfer(Account from, Account to, Money amount)
         {
             if(_validTransferTransaction(from, to, amount))
             {
-                Withdraw(from, amount);
-                Deposit(to, amount);
+                _performWithdrawTransaction(from, amount);
+                _performDepositTransaction(to, amount);
             }
         }
     }

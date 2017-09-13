@@ -1,14 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 namespace DIPS_Challenge
 {
     public class Person : IPerson
     {
         private string _name;
-        private Account[] _accounts;
+        private List<Account> _accounts;
         private int _accountSerialNumber;
         private Money _money;
 
-        public Person(string name, Account[] accounts)
+        public Person(string name, List<Account> accounts)
         {
             _name = name;
             _accounts = accounts;
@@ -32,13 +33,18 @@ namespace DIPS_Challenge
         {
             get
             {
-                return _accounts;
+                return _accounts.ToArray();
             }
+        }
 
-            set
+        public void AddAccount(Account newAccount)
+        {
+            // This may be too restrictive
+            /*if(newAccount.owner == this)
             {
-                _accounts = accounts;
-            }
+                _accounts.Add(newAccount);
+            }*/
+            _accounts.Add(newAccount);
         }
 
         public void incrementAccountSerialNumber()
