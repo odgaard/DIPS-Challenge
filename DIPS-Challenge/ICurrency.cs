@@ -1,10 +1,13 @@
 ﻿using System;
 
-public interface ICurrency
+namespace DIPS_Challenge
 {
-    decimal Value
+    public interface ICurrency
     {
-        get;
-        set;
+        decimal Value
+        {
+            get;
+            set;
+        }
     }
 }
