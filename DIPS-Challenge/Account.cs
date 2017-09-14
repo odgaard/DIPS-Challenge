@@ -1,56 +1,23 @@
 ﻿using System;
 namespace DIPS_Challenge
 {
-    class Account : IAccount
+    public class Account
     {
         private Money _amount;
         private Person _owner;
         private string _name;
         public Account(Money money, Person owner)
         {
+            owner.IncrementAccountSerialNumber();
             _amount = money;
             _owner = owner;
-            _name = owner.name + " " + owner.accountSerialNumber;
-            owner.incrementAccountSerialNumber();
+            _name = owner.Name + " " + owner.AccountSerialNumber;
         }
 
-        public Money money
-        {
-            get
-            {
-                return _amount;
-            }
+        public Money Money { get => _amount; set => _amount = value; }
+     
+        public Person Owner { get => _owner; set => _owner = value; }
 
-            set
-            {
-                _amount = money;
-            }
-        }
-
-        public Person owner
-        {
-            get
-            {
-                return _owner;
-            }
-
-            set
-            {
-                _owner = owner;
-            }
-        }
-
-        public string name
-        {
-            get
-            {
-                return _name;
-            }
-
-            set
-            {
-                _name = name;
-            }
-        }
+        public string Name => _name;
     }
 }

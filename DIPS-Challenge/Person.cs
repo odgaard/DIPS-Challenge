@@ -2,75 +2,38 @@
 using System.Collections.Generic;
 namespace DIPS_Challenge
 {
-    public class Person : IPerson
+    public class Person
     {
         private string _name;
         private List<Account> _accounts;
         private int _accountSerialNumber;
         private Money _money;
 
-        public Person(string name, List<Account> accounts)
+        public Person(string name)
         {
             _name = name;
-            _accounts = accounts;
             _accountSerialNumber = 0;
+            _accounts = new List<Account>();
         }
 
-        public string name
-        {
-            get
-            {
-                return _name;
-            }
+        public Account[] Accounts => _accounts.ToArray();
 
-            set
-            {
-                _name = name;
-            }
-        }
+        public int AccountSerialNumber => _accountSerialNumber;
 
-        public Account[] accounts
-        {
-            get
-            {
-                return _accounts.ToArray();
-            }
-        }
-
-        public void AddAccount(Account newAccount)
-        {
+        public void AddAccounts(Account newAccount) =>
             // This may be too restrictive
             /*if(newAccount.owner == this)
             {
                 _accounts.Add(newAccount);
             }*/
+
             _accounts.Add(newAccount);
-        }
 
-        public void incrementAccountSerialNumber()
-        {
-            ++_accountSerialNumber;
-        }
+        public void IncrementAccountSerialNumber() => ++_accountSerialNumber;
 
-        public int accountSerialNumber
-        {
-            get
-            {
-                return _accountSerialNumber;
-            }
-        }
+        public string Name { get => _name; set => _name = value; }
 
-        public Money money
-        {
-            get
-            {
-                return _money;
-            }
-            set
-            {
-                _money = money;
-            }
-        }
-
+        public Money Money { get => _money; set => _money = value; }
+        
     }
 }
