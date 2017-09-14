@@ -1,7 +1,7 @@
 ﻿using System;
 namespace DIPS_Challenge
 {
-    public class Account : IAccount
+    public class Account
     {
         private Money _amount;
         private Person _owner;

@@ -8,7 +8,7 @@ namespace DIPS_Challenge
 
         public Bank(string name)
         {
-            _bankName = name;
+            BankName = name;
         }
 
         public Account CreateAccount(Person customer, Money initialDeposit)
@@ -17,6 +17,7 @@ namespace DIPS_Challenge
             {
                 var newAccount = new Account(initialDeposit, customer);
                 customer.Money.Value -= initialDeposit.Value;
+                customer.AddAccounts(newAccount);
                 return newAccount;
             }
             else
@@ -86,5 +87,7 @@ namespace DIPS_Challenge
                 Deposit(to, amount);
             }
         }
+
+        public string BankName { get => _bankName; set => _bankName = value; }
     }
 }
