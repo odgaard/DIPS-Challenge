@@ -22,10 +22,10 @@ namespace DIPS_Challenge
 
         public void AddAccounts(Account newAccount) =>
             // This may be too restrictive
-            /*if(newAccount.owner == this)
-            {
-                _accounts.Add(newAccount);
-            }*/
+            //if(newAccount.owner == this)
+            //{
+            //    _accounts.Add(newAccount);
+            //}
 
             _accounts.Add(newAccount);
 

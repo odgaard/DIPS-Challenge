@@ -3,7 +3,6 @@ namespace DIPS_Challenge
 {
     public class Bank : IBankable
     {
-        // Comment?
         private string _bankName;
 
         public Bank(string name)
@@ -26,16 +25,12 @@ namespace DIPS_Challenge
             }
         }
 
-        // Comment?
-        public Account[] GetAccountsForCustomer(Person customer)
-        {
-            return customer.Accounts;
-        }
+        public Account[] GetAccountsForCustomer(Person customer) => customer.Accounts;
 
-        // This method only supports one type of currency. 
-        // Please update the Money Interface and Class before implementing support for multiple currencies
+        // This method only supports one type of currency.
         private bool _requestOwnerHasSufficientFunds(Person owner, Money amount) => owner.Money.Value >= amount.Value;
-        
+
+        // This method only supports one type of currency.
         private bool _requestAccountHasSufficientFunds(Account transfer, Money amount) => transfer.Money.Value >= amount.Value;
 
         private bool _requestMoneyIsPositive(Money amount) => amount.Value >= 0;
@@ -54,14 +49,11 @@ namespace DIPS_Challenge
                 _validDepositTransaction(to, amount)
                 );
 
-        // This method only supports one type of currency. 
-        // Please update the Money Interface and Class before implementing support for multiple currencies
+        // This method only supports one type of currency.
         private void _performDepositTransaction(Account transfer, Money amount) => transfer.Money.Value += amount.Value;
 
+        // This method only supports one type of currency.
         private void _performWithdrawTransaction(Account transfer, Money amount) => transfer.Money.Value -= amount.Value;
-
-        // This method only supports one type of currency through _requestOwnerHasSufficientFunds
-        // Please update the Money Interface and Class before implementing support for multiple currencies
 
         public void Deposit(Account to, Money amount)
         {
@@ -79,14 +71,12 @@ namespace DIPS_Challenge
             }
         }
 
-
-        // This function needs to bypass the conditional checks of Withdraw and Deposit due to the access constrictions of the aforementioned
         public void Transfer(Account from, Account to, Money amount)
         {
             if(_validTransferTransaction(from, to, amount))
             {
-                _performWithdrawTransaction(from, amount);
-                _performDepositTransaction(to, amount);
+                Withdraw(from, amount);
+                Deposit(to, amount);
             }
         }
 
