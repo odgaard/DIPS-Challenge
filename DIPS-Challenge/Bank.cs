@@ -12,34 +12,50 @@ namespace DIPS_Challenge
 
         public Account CreateAccount(Person customer, Money initialDeposit)
         {
-            if(_requestOwnerHasSufficientFunds(customer, initialDeposit))
+            if (!_requestOwnerHasSufficientFunds(customer, initialDeposit))
             {
-                var newAccount = new Account(initialDeposit, customer);
-                customer.Money = new Money(customer.Money.Value - initialDeposit.Value);
-                customer.AddAccounts(newAccount);
-                return newAccount;
+                throw new ArgumentOutOfRangeException("Owner has insufficient funds: " + customer.Money.Value + " < " + initialDeposit.Value);
             }
-            return null;
+            var newAccount = new Account(initialDeposit, customer);
+            customer.Money = new Money(customer.Money.Value - initialDeposit.Value);
+            customer.AddAccounts(newAccount);
+            return newAccount;
         }
 
         public Account[] GetAccountsForCustomer(Person customer) => customer.Accounts;
 
         // This method only supports one type of currency.
-        private bool _requestOwnerHasSufficientFunds(Person owner, Money amount) => owner.Money.Value >= amount.Value;
+        private bool _requestOwnerHasSufficientFunds(Person owner, Money amount) => (owner.Money.Value >= amount.Value);
 
         // This method only supports one type of currency.
-        private bool _requestAccountHasSufficientFunds(Account transfer, Money amount) => transfer.Money.Value >= amount.Value;
+        private bool _requestAccountHasSufficientFunds(Account transfer, Money amount) => (transfer.Money.Value >= amount.Value);
 
-        private bool _requestMoneyIsPositive(Money amount) => amount.Value >= 0;
+        private bool _requestMoneyIsPositive(Money amount) => (amount.Value > 0); 
 
-        private bool _validWithdrawTransaction(Account transfer, Money amount) => (
-                _requestAccountHasSufficientFunds(transfer, amount) &&
-                _requestMoneyIsPositive(amount)
-                );
+        private bool _validWithdrawTransaction(Account transfer, Money amount)
+        {
+            if (!_requestAccountHasSufficientFunds(transfer, amount))
+            {
+                throw new ArgumentOutOfRangeException("Account has insufficient funds: " + transfer.Money.Value + " < " + amount.Value);
+            }
 
-        private bool _validDepositTransaction(Account transfer, Money amount) => (
-                _requestMoneyIsPositive(amount)
-                );
+            if (!_requestMoneyIsPositive(amount))
+            {
+                throw new ArgumentOutOfRangeException("Invalid value, Negative " + amount.Value);
+            }
+
+            return true;
+        }
+
+        private bool _validDepositTransaction(Account transfer, Money amount)
+        {
+            if (!_requestMoneyIsPositive(amount))
+            {
+                throw new ArgumentOutOfRangeException("Invalid value, Negative " + amount.Value);
+            }
+
+            return true;
+        }
 
         private bool _validTransferTransaction(Account from, Account to, Money amount) => (
                 _validWithdrawTransaction(from, amount) &&

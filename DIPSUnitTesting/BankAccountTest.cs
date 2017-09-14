@@ -115,6 +115,7 @@ namespace DIPS_Challenge
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void BankCreateAccountFail()
         {
             // Setup test variables
@@ -130,9 +131,8 @@ namespace DIPS_Challenge
             testPerson.Money = testMoneyPerson;
 
             // Assert
-            Assert.IsNull(
-                testBank.CreateAccount(testPerson, testMoneyAccount)
-                );
+            // Expected to throw ArgumentOutOfRangeException
+            testBank.CreateAccount(testPerson, testMoneyAccount);
         }
 
         [TestMethod]
