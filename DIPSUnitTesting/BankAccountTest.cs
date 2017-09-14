@@ -115,8 +115,30 @@ namespace DIPS_Challenge
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void BankCreateAccountFail()
+        [ExpectedException(typeof(ArgumentException))]
+        public void BankCreateAccountNegativeValue()
+        {
+            // Setup test variables
+            decimal testMoneyPersonAmount = 1600;
+            decimal testMoneyAccountAmount = -1000;
+
+            // Setup test objects
+            var testBank = new Bank(_testBankName);
+            var testPerson = new Person(_testPerson1Name);
+            var testMoneyAccount = new Money(testMoneyAccountAmount);
+            var testMoneyPerson = new Money(testMoneyPersonAmount);
+
+            // Perform test
+            testPerson.Money = testMoneyPerson;
+
+            // Assert
+            // Expected to throw ArgumentException
+            testBank.CreateAccount(testPerson, testMoneyAccount);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void BankCreateAccountInsufficientFunds()
         {
             // Setup test variables
             decimal testMoneyPersonAmount = 800;
@@ -131,7 +153,7 @@ namespace DIPS_Challenge
             testPerson.Money = testMoneyPerson;
 
             // Assert
-            // Expected to throw ArgumentOutOfRangeException
+            // Expected to throw ArgumentException
             testBank.CreateAccount(testPerson, testMoneyAccount);
         }
 
@@ -148,10 +170,13 @@ namespace DIPS_Challenge
             var testMoneyWithdraw = new Money(testMoneyWithdrawAmount);
             var testAccount = new Account(testMoneyAccount, testPerson);
 
+            // Assert array is empty
+            Assert.AreEqual(testBank.GetAccountsForCustomer(testPerson).Length, 0);
+
             // Perform test
             testPerson.AddAccounts(testAccount);
 
-            // Assert
+            // Assert account in array
             int testPersonAccountsIndex = testPerson.Accounts.Length - 1;
 
             Assert.AreEqual(
@@ -161,7 +186,7 @@ namespace DIPS_Challenge
         }
 
         [TestMethod]
-        public void BankWithdraw()
+        public void BankAccountWithdrawPass()
         {
             // Setup test variables
             decimal testMoneyWithdrawAmount = 300;
@@ -184,7 +209,46 @@ namespace DIPS_Challenge
         }
 
         [TestMethod]
-        public void BankDeposit()
+        [ExpectedException(typeof(ArgumentException))]
+        public void BankAccountWithdrawNegativeValue()
+        {
+            // Setup test variables
+            decimal testMoneyWithdrawAmount = -300;
+
+            // Setup test objects
+            var testBank = new Bank(_testBankName);
+            var testPerson = new Person(_testPerson1Name);
+            var testMoneyAccount = new Money(_testMoneyAccount1Amount);
+            var testMoneyWithdraw = new Money(testMoneyWithdrawAmount);
+            var testAccount = new Account(testMoneyAccount, testPerson);
+
+            // Perform test
+            // Expected to throw ArgumentException
+            testBank.Withdraw(testAccount, testMoneyWithdraw);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void BankAccountWithdrawInsufficientFunds()
+        {
+            // Setup test variables
+            decimal testMoneyWithdrawAmount = 3000;
+
+            // Setup test objects
+            var testBank = new Bank(_testBankName);
+            var testPerson = new Person(_testPerson1Name);
+            var testMoneyAccount = new Money(_testMoneyAccount1Amount);
+            var testMoneyWithdraw = new Money(testMoneyWithdrawAmount);
+            var testAccount = new Account(testMoneyAccount, testPerson);
+
+            // Perform test
+            // Expected to throw ArgumentException
+            testBank.Withdraw(testAccount, testMoneyWithdraw);
+            
+        }
+ 
+        [TestMethod]
+        public void BankAccountDepositPass()
         {
             // Setup test variables
             decimal testMoneyDepositAmount = 300;
@@ -207,7 +271,26 @@ namespace DIPS_Challenge
         }
 
         [TestMethod]
-        public void BankTransfer()
+        [ExpectedException(typeof(ArgumentException))]
+        public void BankAccountDepositNegativeValue()
+        {
+            // Setup test variables
+            decimal testMoneyDepositAmount = -300;
+
+            // Setup test objects
+            var testBank = new Bank(_testBankName);
+            var testPerson = new Person(_testPerson1Name);
+            var testMoneyDeposit = new Money(testMoneyDepositAmount);
+            var testMoneyAccount = new Money(_testMoneyAccount1Amount);
+            var testAccount = new Account(testMoneyAccount, testPerson);
+
+            // Perform test
+            // Expected to throw ArgumentException
+            testBank.Deposit(testAccount, testMoneyDeposit);
+        }
+
+        [TestMethod]
+        public void BankAccountTransferPass()
         {
             // Setup test variables
             decimal testMoneyTransferAmount = 300;
@@ -239,6 +322,58 @@ namespace DIPS_Challenge
                 testAccount2.Money.Value,
                 _testMoneyAccount1Amount + testMoneyTransferAmount
                 );
-        } 
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void BankAccountTransferNegativeValue()
+        {
+            // Setup test variables
+            decimal testMoneyTransferAmount = -200;
+
+            // Setup test objects
+            var testBank = new Bank(_testBankName);
+
+            var testPerson1 = new Person(_testPerson1Name);
+            var testPerson2 = new Person(_testPerson2Name);
+
+            var testMoneyAccount1 = new Money(_testMoneyAccount1Amount);
+            var testMoneyAccount2 = new Money(_testMoneyAccount2Amount);
+            var testMoneyTransfer = new Money(testMoneyTransferAmount);
+
+            var testAccount1 = new Account(testMoneyAccount1, testPerson1);
+            var testAccount2 = new Account(testMoneyAccount2, testPerson2);
+
+            // Perform test
+            // Transfer FROM testAccount1 TO testAccount2 WITH testMoneyTransfer
+            // Expected to throw ArgumentException
+            testBank.Transfer(testAccount1, testAccount2, testMoneyTransfer);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void BankAccountTransferInsufficientFunds()
+        {
+            // Setup test variables
+            decimal testMoneyTransferAmount = 2000;
+
+            // Setup test objects
+            var testBank = new Bank(_testBankName);
+
+            var testPerson1 = new Person(_testPerson1Name);
+            var testPerson2 = new Person(_testPerson2Name);
+
+            var testMoneyAccount1 = new Money(_testMoneyAccount1Amount);
+            var testMoneyAccount2 = new Money(_testMoneyAccount2Amount);
+            var testMoneyTransfer = new Money(testMoneyTransferAmount);
+
+            var testAccount1 = new Account(testMoneyAccount1, testPerson1);
+            var testAccount2 = new Account(testMoneyAccount2, testPerson2);
+
+            // Perform test
+            // Transfer FROM testAccount1 TO testAccount2 WITH testMoneyTransfer
+            // Expected to throw ArgumentException
+            testBank.Transfer(testAccount1, testAccount2, testMoneyTransfer);
+        }
     }
 }

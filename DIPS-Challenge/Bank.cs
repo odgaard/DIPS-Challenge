@@ -34,14 +34,14 @@ namespace DIPS_Challenge
 
         private bool _validPersonWithdrawTransaction(Person owner, Money amount)
         {
-            if (!_requestPersonHasSufficientFunds(owner, amount))
-            {
-                throw new ArgumentOutOfRangeException("Person has insufficient funds: " + owner.Money.Value + " < " + amount.Value);
-            }
-
             if (!_requestMoneyIsPositive(amount))
             {
-                throw new ArgumentOutOfRangeException("Invalid value, Negative " + amount.Value);
+                throw new ArgumentException("Invalid value, Negative " + amount.Value);
+            }
+
+            if (!_requestPersonHasSufficientFunds(owner, amount))
+            {
+                throw new ArgumentException("Person has insufficient funds: " + owner.Money.Value + " < " + amount.Value);
             }
 
             return true;
@@ -49,14 +49,15 @@ namespace DIPS_Challenge
 
         private bool _validAccountWithdrawTransaction(Account transfer, Money amount)
         {
-            if (!_requestAccountHasSufficientFunds(transfer, amount))
-            {
-                throw new ArgumentOutOfRangeException("Account has insufficient funds: " + transfer.Money.Value + " < " + amount.Value);
-            }
 
             if (!_requestMoneyIsPositive(amount))
             {
-                throw new ArgumentOutOfRangeException("Invalid value, Negative " + amount.Value);
+                throw new ArgumentException("Invalid value, Negative " + amount.Value);
+            }
+
+            if (!_requestAccountHasSufficientFunds(transfer, amount))
+            {
+                throw new ArgumentException("Account has insufficient funds: " + transfer.Money.Value + " < " + amount.Value);
             }
 
             return true;
@@ -66,16 +67,16 @@ namespace DIPS_Challenge
         {
             if (!_requestMoneyIsPositive(amount))
             {
-                throw new ArgumentOutOfRangeException("Invalid value, Negative " + amount.Value);
+                throw new ArgumentException("Invalid value, Negative " + amount.Value);
             }
 
             return true;
         }
 
         private bool _validAccountTransferTransaction(Account from, Account to, Money amount) => (
-                _validAccountWithdrawTransaction(from, amount) &&
-                _validAccountDepositTransaction(to, amount)
-                );
+               _validAccountDepositTransaction(to, amount)
+            && _validAccountWithdrawTransaction(from, amount)
+            );
 
         // This method only supports one type of currency.
         private void _performAccountDepositTransaction(Account transfer, Money amount) => 
