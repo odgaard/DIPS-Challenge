@@ -2,7 +2,7 @@
 
 This is a development project for my summer internship application to DIPS.
 
-## The task
+## The Task
 Create a class Bank with following methods in C#:
 ```C#
 Account CreateAccount(Person customer, Money initialDeposit)
