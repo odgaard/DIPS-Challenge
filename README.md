@@ -13,6 +13,11 @@ void Transfer(Account from, Account to, Money amount)
 ```
 
 ## Current implementation
+### Code style
+I have followed Microsoft's official C# Coding Conventions in the main implementation.
+The code also contains few comments because it strives to be self-documenting.
+
+### Implementation
 The implemented solution uses the given interface and seems to solve the problem. 
 The other classes are implemented based on the properties of the given interface.
 The implemented tests cover 92% of the solution, where the remaining 8% are getters/setters. 
