@@ -35,7 +35,7 @@ namespace DIPS_Challenge
         // This method only supports one type of currency. 
         // Please update the Money Interface and Class before implementing support for multiple currencies
         private bool _requestOwnerHasSufficientFunds(Person owner, Money amount) => owner.Money.Value >= amount.Value;
-
+        
         private bool _requestAccountHasSufficientFunds(Account transfer, Money amount) => transfer.Money.Value >= amount.Value;
 
         private bool _requestMoneyIsPositive(Money amount) => amount.Value >= 0;
@@ -79,12 +79,14 @@ namespace DIPS_Challenge
             }
         }
 
+
+        // This function needs to bypass the conditional checks of Withdraw and Deposit due to the access constrictions of the aforementioned
         public void Transfer(Account from, Account to, Money amount)
         {
             if(_validTransferTransaction(from, to, amount))
             {
-                Withdraw(from, amount);
-                Deposit(to, amount);
+                _performWithdrawTransaction(from, amount);
+                _performDepositTransaction(to, amount);
             }
         }
 
