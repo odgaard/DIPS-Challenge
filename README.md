@@ -20,7 +20,7 @@ The code also contains few comments because it strives to be self-documenting.
 #### Implementation
 The implemented solution uses the given interface and seems to solve the problem. 
 The other classes are implemented based on the properties of the given interface.
-The implemented tests cover 92% of the solution, where the remaining 8% are getters/setters. 
+The implemented tests cover 95% of the solution, where the remaining 5% are getters/setters. 
 
 ## Suggested improved implementation
 In the task the text vaguely suggests a form of user authentication under bulletpoint 1 in the description of Withdraw and Deposit.
