@@ -1,0 +1,40 @@
+# DIPS-Challenge 2017
+
+This is a development project for my summer internship application to DIPS.
+
+## The task
+Create a class Bank with following methods in C#:
+```C#
+Account CreateAccount(Person customer, Money initialDeposit)
+Account[] GetAccountsForCustomer(Person customer)
+void Deposit(Account to, Money amount)
+void Withdraw(Account from, Money amount)
+void Transfer(Account from, Account to, Money amount)
+```
+
+## Current implementation
+The implemented solution uses the given interface and seems to solve the problem. 
+The other classes are implemented based on the properties of the given interface.
+The implemented tests cover 92% of the solution, where the remaining 8% are getters/setters. 
+
+
+## Suggested improved implementation
+In the task the text vaguely suggests a form of user authentication under bulletpoint 1 in the description of Withdraw and Deposit.
+The given interface does not allow nicely for such an implementation, and this would have to be discussed with colleagues. 
+The leader of the HR department did not comment on this issue. 
+In addition to this the concept of a Person object containing Money seems like a bad design choice. 
+I would therefore recommend to constrain the creation of new accounts to an initialValue of 0 and then optionally 
+specify an account to transfer the money from.
+
+An alteration to the interface that could allow this type of implementation:
+
+```C#
+Account CreateAccount(Person customer, Money initialDeposit, Account from)
+Account[] GetAccountsForCustomer(Person customer)
+void Deposit(Person requestOwner, Account to, Money amount)
+void Withdraw(Person requestOwner, Account from, Money amount)
+void Transfer(Person requestOwner, Account from, Account to, Money amount)
+```
+
+This allows the programmer to check access rights from within the methods.
+
