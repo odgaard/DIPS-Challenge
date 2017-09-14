@@ -15,7 +15,7 @@ namespace DIPS_Challenge
             if(_requestOwnerHasSufficientFunds(customer, initialDeposit))
             {
                 var newAccount = new Account(initialDeposit, customer);
-                customer.Money.Value -= initialDeposit.Value;
+                customer.Money = new Money(customer.Money.Value - initialDeposit.Value);
                 customer.AddAccounts(newAccount);
                 return newAccount;
             }
@@ -47,10 +47,12 @@ namespace DIPS_Challenge
                 );
 
         // This method only supports one type of currency.
-        private void _performDepositTransaction(Account transfer, Money amount) => transfer.Money.Value += amount.Value;
+        private void _performDepositTransaction(Account transfer, Money amount) => 
+            transfer.Money = new Money(transfer.Money.Value + amount.Value);
 
         // This method only supports one type of currency.
-        private void _performWithdrawTransaction(Account transfer, Money amount) => transfer.Money.Value -= amount.Value;
+        private void _performWithdrawTransaction(Account transfer, Money amount) =>
+            transfer.Money = new Money(transfer.Money.Value - amount.Value);
 
         public void Deposit(Account to, Money amount)
         {

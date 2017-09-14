@@ -11,6 +11,6 @@ namespace DIPS_Challenge
             _value = value;
         }
 
-        public decimal Value { get => _value; set => _value = value; }
+        public decimal Value { get => _value; }
     }
 }
