@@ -19,10 +19,7 @@ namespace DIPS_Challenge
                 customer.AddAccounts(newAccount);
                 return newAccount;
             }
-            else
-            {
-                throw new ArgumentOutOfRangeException("Insufficient funds");
-            }
+            return null;
         }
 
         public Account[] GetAccountsForCustomer(Person customer) => customer.Accounts;
