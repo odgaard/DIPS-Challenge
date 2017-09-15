@@ -14,7 +14,7 @@ void Transfer(Account from, Account to, Money amount)
 
 ## Current implementation
 #### Code style
-I have followed Microsoft's official C# Coding Conventions in the main implementation.
+I have followed [Microsoft's C# Coding Conventions](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/coding-conventions) in the main implementation.
 The code also contains few comments because it strives to be self-documenting.
 
 #### Implementation
