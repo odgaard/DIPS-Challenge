@@ -12,14 +12,10 @@ namespace DIPS_Challenge
 
         public Account CreateAccount(Person customer, Money initialDeposit)
         {
-            if (ValidWithdrawTransaction(customer, initialDeposit))
-            {
-                var newAccount = new Account(initialDeposit, customer);
-                customer.Money = new Money(customer.Money.Value - initialDeposit.Value);
-                customer.AddAccounts(newAccount);
-                return newAccount;
-            }
-            return null;
+            var newAccount = new Account(new Money(0), customer);
+            Transfer(customer, newAccount, initialDeposit);
+            customer.AddAccounts(newAccount);
+            return newAccount;
         }
 
         public Account[] GetAccountsForCustomer(Person customer) => customer.Accounts;
@@ -27,14 +23,23 @@ namespace DIPS_Challenge
         // This method only supports one type of currency.
         private bool RequestFundHasSufficientFunds(IFund fund, Money amount) => (fund.Money.Value >= amount.Value);
 
-        private bool ValidWithdrawTransaction(IFund fund, Money amount) => RequestFundHasSufficientFunds(fund, amount);
+        private void ValidateWithdrawTransaction(IFund fund, Money amount) {
+            if (!RequestFundHasSufficientFunds(fund, amount))
+            {
+                throw new ArgumentException(String.Format("{0} has insufficient funds to withdraw: {1} < {2}",
+                                                fund, fund.Money.Value, amount.Value));
+            }
+        }
 
-        private bool ValidDepositTransaction(IFund transfer, Money amount) => true;
+        private void ValidateDepositTransaction(IFund transfer, Money amount)
+        {
 
-        private bool ValidTransferTransaction(IFund from, IFund to, Money amount) => (
-               ValidDepositTransaction(to, amount)
-            && ValidWithdrawTransaction(from, amount)
-            );
+        }
+
+        private void ValidateTransferTransaction(IFund from, IFund to, Money amount) {
+            ValidateDepositTransaction(to, amount);
+            ValidateWithdrawTransaction(from, amount);
+        }
 
         // This method only supports one type of currency.
         private void PerformDepositTransaction(IFund fund, Money amount) => 
@@ -50,42 +55,22 @@ namespace DIPS_Challenge
             PerformDepositTransaction(to, amount);
         }
 
-        public void Deposit(Account to, Money amount)
+        public void Deposit(IFund to, Money amount)
         {
-            if (ValidDepositTransaction(to, amount))
-            {
-                PerformDepositTransaction(to, amount);
-            }
-            else
-            {
-                throw new ArgumentException("Unable to deposit to this account");
-            }
+            ValidateDepositTransaction(to, amount);
+            PerformDepositTransaction(to, amount);
         }
 
-        public void Withdraw(Account from, Money amount)
+        public void Withdraw(IFund from, Money amount)
         {
-            if(ValidWithdrawTransaction(from, amount))
-            {
-                PerformWithdrawTransaction(from, amount);
-            }
-            else
-            {
-                throw new ArgumentException(String.Format("{0} has insufficient funds to withdraw: {1} < {2}",
-                                                            from, from.Money.Value, amount.Value));
-            }
+            ValidateWithdrawTransaction(from, amount); 
+            PerformWithdrawTransaction(from, amount);
         }
 
-        public void Transfer(Account from, Account to, Money amount)
+        public void Transfer(IFund from, IFund to, Money amount)
         {
-            if(ValidTransferTransaction(from, to, amount))
-            {
-                PerformTransferTransaction(from, to, amount);
-            }
-            else
-            {
-                throw new ArgumentException(String.Format("{0} has insufficient funds to transfer to {1}: {2} < {3}",
-                                                            from, to, from.Money.Value, amount.Value));
-            }
+            ValidateTransferTransaction(from, to, amount);
+            PerformTransferTransaction(from, to, amount);
         }
 
         public string BankName { get => bankName; set => bankName = value; }
