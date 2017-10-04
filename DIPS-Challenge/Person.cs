@@ -4,21 +4,21 @@ namespace DIPS_Challenge
 {
     public class Person
     {
-        private string _name;
-        private List<Account> _accounts;
-        private int _accountSerialNumber;
-        private Money _money;
+        private string name;
+        private List<Account> accounts;
+        private int accountSerialNumber;
+        private Money money;
 
         public Person(string name)
         {
-            _name = name;
-            _accountSerialNumber = 0;
-            _accounts = new List<Account>();
+            this.name = name;
+            this.accountSerialNumber = 0;
+            this.accounts = new List<Account>();
         }
 
-        public Account[] Accounts => _accounts.ToArray();
+        public Account[] Accounts => this.accounts.ToArray();
 
-        public int AccountSerialNumber => _accountSerialNumber;
+        public int AccountSerialNumber => this.accountSerialNumber;
 
         public void AddAccounts(Account newAccount) =>
             // This may be too restrictive
@@ -27,13 +27,13 @@ namespace DIPS_Challenge
             //    _accounts.Add(newAccount);
             //}
 
-            _accounts.Add(newAccount);
+            this.accounts.Add(newAccount);
 
-        public void IncrementAccountSerialNumber() => ++_accountSerialNumber;
+        public void IncrementAccountSerialNumber() => ++this.accountSerialNumber;
 
-        public string Name { get => _name; set => _name = value; }
+        public string Name { get => this.name; set => this.name = value; }
 
-        public Money Money { get => _money; set => _money = value; }
+        public Money Money { get => this.money; set => this.money = value; }
         
     }
 }

@@ -4,12 +4,12 @@ namespace DIPS_Challenge
     public class Money
     {
 
-        private readonly decimal _value;
+        private readonly decimal value;
 
         public Money(decimal value)
         {
             ValidateValue(value);
-            _value = value;
+            this.value = value;
         }
 
         private void ValidateValue(decimal value)
@@ -19,6 +19,6 @@ namespace DIPS_Challenge
                 throw new ArgumentException("Money's value can't be negative " + value);
             }
         }
-        public decimal Value { get => _value; }
+        public decimal Value { get => value; }
     }
 }
