@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 namespace DIPS_Challenge
 {
-    public class Person
+    public class Person : IFund
     {
         private string name;
         private List<Account> accounts;
