@@ -55,6 +55,25 @@ namespace DIPS_Challenge
         }
     }
 
+    class BankTestSetup
+    {
+        public BankTestSetup(decimal person1Fund = 0, decimal person2Fund = 0,
+                          decimal account1Fund = 0, decimal account2Fund = 0,
+                          decimal transferAmount = 0)
+        {
+            Bank = new Bank("DNB");
+            Person1 = new Person("Jacob Tørring") { Money = new Money(person1Fund) };
+            Person2 = new Person("Erik Ormevik") { Money = new Money(person2Fund) };
+        }
+
+        public Bank Bank { get; set; }
+        public Person Person1 { get; set; }
+        public Person Person2 { get; set; }
+        public Account Account1 { get; set; }
+        public Account Account2 { get; set; }
+        public Money Transfer { get; set; }
+    }
+
     [TestClass]
     public class BankTest
     {
