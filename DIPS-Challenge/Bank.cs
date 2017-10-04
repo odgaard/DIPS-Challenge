@@ -88,8 +88,8 @@ namespace DIPS_Challenge
         {
             if(ValidAccountTransferTransaction(from, to, amount))
             {
-                Withdraw(from, amount);
-                Deposit(to, amount);
+                PerformAccountWithdrawTransaction(from, amount);
+                PerformAccountDepositTransaction(to, amount);
             }
         }
 
