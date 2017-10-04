@@ -30,15 +30,8 @@ namespace DIPS_Challenge
         // This method only supports one type of currency.
         private bool RequestAccountHasSufficientFunds(Account transfer, Money amount) => (transfer.Money.Value >= amount.Value);
 
-        private bool RequestMoneyIsPositive(Money amount) => (amount.Value > 0);
-
         private bool ValidPersonWithdrawTransaction(Person owner, Money amount)
         {
-            if (!RequestMoneyIsPositive(amount))
-            {
-                throw new ArgumentException("Invalid value, Negative " + amount.Value);
-            }
-
             if (!RequestPersonHasSufficientFunds(owner, amount))
             {
                 throw new ArgumentException("Person has insufficient funds: " + owner.Money.Value + " < " + amount.Value);
@@ -49,12 +42,6 @@ namespace DIPS_Challenge
 
         private bool ValidAccountWithdrawTransaction(Account transfer, Money amount)
         {
-
-            if (!RequestMoneyIsPositive(amount))
-            {
-                throw new ArgumentException("Invalid value, Negative " + amount.Value);
-            }
-
             if (!RequestAccountHasSufficientFunds(transfer, amount))
             {
                 throw new ArgumentException("Account has insufficient funds: " + transfer.Money.Value + " < " + amount.Value);
@@ -65,11 +52,6 @@ namespace DIPS_Challenge
 
         private bool ValidAccountDepositTransaction(Account transfer, Money amount)
         {
-            if (!RequestMoneyIsPositive(amount))
-            {
-                throw new ArgumentException("Invalid value, Negative " + amount.Value);
-            }
-
             return true;
         }
 
