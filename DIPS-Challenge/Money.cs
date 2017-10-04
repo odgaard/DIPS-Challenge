@@ -4,7 +4,7 @@ namespace DIPS_Challenge
     public class Money
     {
 
-        private decimal _value;
+        private readonly decimal _value;
 
         public Money(decimal value)
         {
