@@ -28,6 +28,8 @@ namespace DIPS_Challenge
 
             Assert.AreEqual(testMoney.Value, testAmount);
         }
+
+        [TestMethod]
         public void MoneyZero()
         {
             decimal testAmount = 0;
@@ -36,6 +38,9 @@ namespace DIPS_Challenge
 
             Assert.AreEqual(testMoney.Value, testAmount);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
         public void MoneyNegative()
         {
             decimal testAmount = -1;
