@@ -6,8 +6,8 @@ namespace DIPS_Challenge
     {
         Account CreateAccount(Person customer, Money initialDeposit);
         Account[] GetAccountsForCustomer(Person customer);
-        void Deposit(IFund to, Money amount);
-        void Withdraw(IFund from, Money amount);
-        void Transfer(IFund from, IFund to, Money amount);
+        void Deposit(Fund to, Money amount);
+        void Withdraw(Fund from, Money amount);
+        void Transfer(Fund from, Fund to, Money amount);
     }
 }

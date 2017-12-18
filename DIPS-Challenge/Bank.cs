@@ -3,8 +3,6 @@ namespace DIPS_Challenge
 {
     public class Bank : IBankable
     {
-        private string bankName;
-
         public Bank(string name)
         {
             BankName = name;
@@ -20,59 +18,32 @@ namespace DIPS_Challenge
 
         public Account[] GetAccountsForCustomer(Person customer) => customer.Accounts;
 
-        // This method only supports one type of currency.
-        private bool RequestFundHasSufficientFunds(IFund fund, Money amount) => (fund.Money.Value >= amount.Value);
-
-        private void ValidateWithdrawTransaction(IFund fund, Money amount) {
-            if (!RequestFundHasSufficientFunds(fund, amount))
-            {
-                throw new ArgumentException(String.Format("{0} has insufficient funds to withdraw: {1} < {2}",
-                                                fund, fund.Money.Value, amount.Value));
-            }
+        private void ValidateTransfer(Fund from, Fund to, Money amount) {
+            from.ValidateWithdraw(amount);
+            to.ValidateDeposit(amount);
         }
-
-        private void ValidateDepositTransaction(IFund transfer, Money amount)
+        
+        private void PerformTransfer(Fund from, Fund to, Money amount)
         {
-
+            from.Withdraw(amount);
+            to.Deposit(amount);
         }
 
-        private void ValidateTransferTransaction(IFund from, IFund to, Money amount) {
-            ValidateDepositTransaction(to, amount);
-            ValidateWithdrawTransaction(from, amount);
+        public void Deposit(Fund to, Money amount) {
+            to.Deposit(amount);
         }
 
-        // This method only supports one type of currency.
-        private void PerformDepositTransaction(IFund fund, Money amount) => 
-            fund.Money = new Money(fund.Money.Value + amount.Value);
-
-        // This method only supports one type of currency.
-        private void PerformWithdrawTransaction(IFund fund, Money amount) =>
-            fund.Money = new Money(fund.Money.Value - amount.Value);
-
-        private void PerformTransferTransaction(IFund from, IFund to, Money amount)
+        public void Withdraw(Fund from, Money amount)
         {
-            PerformWithdrawTransaction(from, amount);
-            PerformDepositTransaction(to, amount);
+            from.Withdraw(amount);
         }
 
-        public void Deposit(IFund to, Money amount)
+        public void Transfer(Fund from, Fund to, Money amount)
         {
-            ValidateDepositTransaction(to, amount);
-            PerformDepositTransaction(to, amount);
+            ValidateTransfer(from, to, amount);
+            PerformTransfer(from, to, amount);
         }
 
-        public void Withdraw(IFund from, Money amount)
-        {
-            ValidateWithdrawTransaction(from, amount); 
-            PerformWithdrawTransaction(from, amount);
-        }
-
-        public void Transfer(IFund from, IFund to, Money amount)
-        {
-            ValidateTransferTransaction(from, to, amount);
-            PerformTransferTransaction(from, to, amount);
-        }
-
-        public string BankName { get => bankName; set => bankName = value; }
+        public string BankName { get; set; }
     }
 }
