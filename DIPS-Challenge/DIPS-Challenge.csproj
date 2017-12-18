@@ -44,6 +44,7 @@
     <Compile Include="Account.cs" />
     <Compile Include="Bank.cs" />
     <Compile Include="IBankable.cs" />
+    <Compile Include="Fund.cs" />
     <Compile Include="Money.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Program.cs" />

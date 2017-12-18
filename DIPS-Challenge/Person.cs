@@ -2,38 +2,28 @@
 using System.Collections.Generic;
 namespace DIPS_Challenge
 {
-    public class Person
+    public class Person : Fund
     {
-        private string _name;
-        private List<Account> _accounts;
-        private int _accountSerialNumber;
-        private Money _money;
+        private List<Account> accounts;
+        private int accountSerialNumber;
 
-        public Person(string name)
+        public Person(string name) : this(new Money(0), name)
         {
-            _name = name;
-            _accountSerialNumber = 0;
-            _accounts = new List<Account>();
         }
 
-        public Account[] Accounts => _accounts.ToArray();
+        public Person(Money initialDeposit, string name) : base(initialDeposit)
+        {
+            base.Name = name;
+            accountSerialNumber = 0;
+            accounts = new List<Account>();
+        }
 
-        public int AccountSerialNumber => _accountSerialNumber;
+        public Account[] Accounts => accounts.ToArray();
 
-        public void AddAccounts(Account newAccount) =>
-            // This may be too restrictive
-            //if(newAccount.owner == this)
-            //{
-            //    _accounts.Add(newAccount);
-            //}
+        public int AccountSerialNumber => accountSerialNumber;
 
-            _accounts.Add(newAccount);
+        public void AddAccounts(Account newAccount) => accounts.Add(newAccount);
 
-        public void IncrementAccountSerialNumber() => ++_accountSerialNumber;
-
-        public string Name { get => _name; set => _name = value; }
-
-        public Money Money { get => _money; set => _money = value; }
-        
+        public void IncrementAccountSerialNumber() => ++accountSerialNumber;
     }
 }
